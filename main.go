@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 
 	"github.com/Tus1688/wordmunger/pkg/wordmunger"
 )
@@ -24,4 +25,6 @@ func main() {
 		Concurrent: *concurrent,
 	}
 	arg.ReadFile()
+	res := arg.Munging()
+	fmt.Println(res)
 }

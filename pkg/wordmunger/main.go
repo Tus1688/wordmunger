@@ -39,3 +39,27 @@ func (wm *WordMunger) ReadFile() {
 		}
 	}
 }
+
+func (wm *WordMunger) Munging() []string {
+	variations := []string{""}
+	for _, x := range wm.WordTarget {
+		for _, p := range x {
+			lowers := []string{}
+			for _, v := range variations {
+				lowers = append(lowers, v+string(p))
+			}
+			if subs, ok := commonSubs[string(p)]; ok {
+				for _, s := range subs {
+					x := []string{}
+					for _, v := range variations {
+						x = append(x, v+s)
+					}
+					log.Print(x)
+					lowers = append(lowers, x...)
+				}
+			}
+			variations = lowers
+		}
+	}
+	return variations
+}
