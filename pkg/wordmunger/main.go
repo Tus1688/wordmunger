@@ -40,6 +40,33 @@ func (wm *WordMunger) ReadFile() {
 	}
 }
 
+func (wm *WordMunger) WriteFile(input []string) error {
+	curdir, err := os.Getwd()
+	if err != nil {
+		return err
+	}
+	var filePath string
+	if len(wm.OutputFile) < len(curdir) {
+		filePath = curdir + "/" + wm.OutputFile
+	} else {
+		filePath = wm.OutputFile
+	}
+
+	file, err := os.Create(filePath)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	// for each line in file add it to WordTarget slice
+	for _, line := range input {
+		_, err := file.WriteString(line + "\n")
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 func (wm *WordMunger) Munging() []string {
 	variations := []string{""}
 	for _, x := range wm.WordTarget {

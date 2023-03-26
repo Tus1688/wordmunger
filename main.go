@@ -28,4 +28,8 @@ func main() {
 	res := arg.Munging()
 	fmt.Println(res)
 	fmt.Println(len(res))
+	err := arg.WriteFile(res)
+	if err != nil {
+		fmt.Println(err)
+	}
 }
