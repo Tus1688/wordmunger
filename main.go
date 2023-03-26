@@ -27,4 +27,5 @@ func main() {
 	arg.ReadFile()
 	res := arg.Munging()
 	fmt.Println(res)
+	fmt.Println(len(res))
 }

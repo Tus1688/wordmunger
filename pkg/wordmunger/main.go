@@ -54,7 +54,6 @@ func (wm *WordMunger) Munging() []string {
 					for _, v := range variations {
 						x = append(x, v+s)
 					}
-					log.Print(x)
 					lowers = append(lowers, x...)
 				}
 			}
