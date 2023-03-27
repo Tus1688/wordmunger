@@ -66,25 +66,31 @@ func (wm *WordMunger) WriteFile(input []string) error {
 	return nil
 }
 
-func (wm *WordMunger) Munging() []string {
+func (wm *WordMunger) Worker() []string {
+	var res []string
+	for _, word := range wm.WordTarget {
+		res = append(res, Munging(word)...)
+	}
+	return res
+}
+
+func Munging(input string) []string {
 	variations := []string{""}
-	for _, x := range wm.WordTarget {
-		for _, p := range x {
-			lowers := []string{}
-			for _, v := range variations {
-				lowers = append(lowers, v+string(p))
-			}
-			if subs, ok := commonSubs[string(p)]; ok {
-				for _, s := range subs {
-					x := []string{}
-					for _, v := range variations {
-						x = append(x, v+s)
-					}
-					lowers = append(lowers, x...)
-				}
-			}
-			variations = lowers
+	for _, p := range input {
+		lowers := []string{}
+		for _, v := range variations {
+			lowers = append(lowers, v+string(p))
 		}
+		if subs, ok := commonSubs[string(p)]; ok {
+			for _, s := range subs {
+				x := []string{}
+				for _, v := range variations {
+					x = append(x, v+s)
+				}
+				lowers = append(lowers, x...)
+			}
+		}
+		variations = lowers
 	}
 	return variations
 }

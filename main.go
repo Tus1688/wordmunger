@@ -23,7 +23,7 @@ func main() {
 		OutputFile: *outputFile,
 	}
 	arg.ReadFile()
-	res := arg.Munging()
+	res := arg.Worker()
 	// blue color
 	fmt.Println("[i] generated:", len(res), "words")
 	err := arg.WriteFile(res)
