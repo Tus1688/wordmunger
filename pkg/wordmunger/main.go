@@ -8,7 +8,6 @@ import (
 
 type WordMunger struct {
 	WordTarget []string
-	Concurrent int
 	InputFile  string
 	OutputFile string
 }
