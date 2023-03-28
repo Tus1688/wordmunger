@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"log"
 	"os"
+	"sync"
 )
 
 type WordMunger struct {
@@ -68,9 +69,22 @@ func (wm *WordMunger) WriteFile(input []string) error {
 
 func (wm *WordMunger) Worker() []string {
 	var res []string
+	sem := make(chan struct{}, 10)
+	mu := sync.Mutex{}
+	wg := sync.WaitGroup{}
 	for _, word := range wm.WordTarget {
-		res = append(res, Munging(word)...)
+		wg.Add(1)
+		sem <- struct{}{}
+		go func(word string) {
+			defer wg.Done()
+			defer func() { <-sem }()
+			value := Munging(word)
+			mu.Lock()
+			res = append(res, value...)
+			mu.Unlock()
+		}(word)
 	}
+	wg.Wait()
 	return res
 }
 
